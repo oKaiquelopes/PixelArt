@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pixel Art Web</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: white;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    canvas {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pixel Art Web 🧱</h1>
+  <p>Clique para pintar. Pressione <strong>S</strong> para salvar sua arte.</p>
+  <script>
+    const cols = 32; // número de colunas
+    const rows = 32; // número de linhas
+    const pixelSize = 20; // tamanho de cada pixel
+    let grid = [];
+
+    let currentColor;
+
+    function setup() {
+      createCanvas(cols * pixelSize, rows * pixelSize);
+      noStroke();
+      for (let x = 0; x < cols; x++) {
+        grid[x] = [];
+        for (let y = 0; y < rows; y++) {
+          grid[x][y] = color(255); // cor inicial: branco
+        }
+      }
+      currentColor = color(random(255), random(255), random(255)); // cor aleatória inicial
+    }
+
+    function draw() {
+      for (let x = 0; x < cols; x++) {
+        for (let y = 0; y < rows; y++) {
+          fill(grid[x][y]);
+          rect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+        }
+      }
+    }
+
+    function mousePressed() {
+      paintPixel();
+    }
+
+    function mouseDragged() {
+      paintPixel();
+    }
+
+    function paintPixel() {
+      let x = floor(mouseX / pixelSize);
+      let y = floor(mouseY / pixelSize);
+      if (x >= 0 && x < cols && y >= 0 && y < rows) {
+        grid[x][y] = currentColor;
+      }
+    }
+
+    function keyPressed() {
+      if (key === 's' || key === 'S') {
+        saveCanvas('pixel-art', 'png');
+      }
+      if (key === 'c' || key === 'C') {
+        currentColor = color(random(255), random(255), random(255)); // nova cor aleatória
+      }
+    }
+  </script>
+</body>
+</html>
